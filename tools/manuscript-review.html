@@ -57,7 +57,26 @@
   </section>
 
   <section class="panel tool-input-panel reveal">
-    <label for="manuscriptInput" class="tool-label">Your text</label>
+    <div class="type-select-block">
+      <label for="researchTypeSelect" class="tool-label">What kind of research is this? (select this first)</label>
+      <div class="tool-controls" style="margin-top:0;">
+        <select id="researchTypeSelect" class="tool-select">
+          <option value="">— Select —</option>
+          <option value="review">Review</option>
+          <option value="original">Original research</option>
+        </select>
+        <select id="researchSubtypeSelect" class="tool-select" disabled>
+          <option value="">— Select type first —</option>
+        </select>
+      </div>
+      <p class="tool-note">
+        This determines which reporting guideline gets checked (PRISMA 2020, PRISMA-ScR, SANRA, CONSORT,
+        STROBE, STARD...) on top of the checklist items that apply to every manuscript.
+      </p>
+      <p class="tool-note" id="typeSelectError" style="color:var(--accent);" hidden></p>
+    </div>
+
+    <label for="manuscriptInput" class="tool-label" style="margin-top:20px;">Your text</label>
     <textarea id="manuscriptInput" rows="14" placeholder="Paste your abstract, section, or full manuscript here..."></textarea>
 
     <div class="tool-controls">

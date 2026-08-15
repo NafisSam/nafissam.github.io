@@ -27,6 +27,43 @@ References
 2. Osei K. Medication adherence in type 2 diabetes: a review. 2019.
 4. Patel S. mHealth in low-resource settings. 2020.`;
 
+/* ---------- research type taxonomy ----------
+   The reviewer (rule-based and AI) always applies two layers: a Universal
+   layer (compliance items every manuscript type needs) plus a type-specific
+   layer keyed to the manuscript's actual reporting guideline. The user
+   selects the type explicitly — we don't try to auto-detect it, since the
+   consequence of guessing wrong (checking a paper against the wrong
+   guideline) is worse than asking. */
+
+const RESEARCH_TYPES = {
+  review: {
+    label: "Review",
+    subtypes: {
+      systematic: { label: "Systematic review", guidelineName: "PRISMA 2020", checklistKey: "PRISMA" },
+      scoping: { label: "Scoping review", guidelineName: "PRISMA-ScR", checklistKey: "PRISMA_SCR" },
+      narrative: { label: "Narrative review", guidelineName: "SANRA", checklistKey: "SANRA" },
+      umbrella: { label: "Umbrella review", guidelineName: "PRISMA 2020 (adapted) + AMSTAR-2", checklistKey: "UMBRELLA" },
+    },
+  },
+  original: {
+    label: "Original research",
+    subtypes: {
+      rct: { label: "Randomized controlled trial (RCT)", guidelineName: "CONSORT", checklistKey: "CONSORT" },
+      observational: { label: "Observational study (cohort / case-control / cross-sectional)", guidelineName: "STROBE", checklistKey: "STROBE" },
+      diagnostic: { label: "Diagnostic accuracy study", guidelineName: "STARD", checklistKey: "STARD" },
+      other: { label: "Other / general original research", guidelineName: null, checklistKey: null },
+    },
+  },
+};
+
+function getSubtypeConfig(groupKey, subtypeKey) {
+  const group = RESEARCH_TYPES[groupKey];
+  if (!group) return null;
+  const subtype = group.subtypes[subtypeKey];
+  if (!subtype) return null;
+  return { groupKey, subtypeKey, groupLabel: group.label, ...subtype };
+}
+
 /* ---------- text helpers ---------- */
 
 function splitSentences(text) {
@@ -261,11 +298,21 @@ function checkCitationReferenceMatch(text) {
   return items;
 }
 
-/* ---------- reporting-guideline checklists ---------- */
+/* ---------- reporting-guideline checklists ----------
+   Keyed by checklistKey (see RESEARCH_TYPES above). These are heuristic
+   keyword checks, not proof of compliance — the UI says so explicitly.
+   A "?" means the keyword wasn't found; it doesn't mean the item is absent. */
+
+const UNIVERSAL_CHECKLIST_ITEMS = [
+  { item: "Data Availability Statement", kw: [/\bdata availability\b/i, /\bdata are available\b/i, /\bavailable (upon|on) (reasonable )?request\b/i] },
+  { item: "Ethics approval / informed consent (or explicit non-applicability)", kw: [/\bethic(s|al) approval\b/i, /\binformed consent\b/i, /\b(institutional review board|IRB|ethics committee)\b/i, /\bdid not require ethical approval\b/i] },
+  { item: "Author contribution statement (CRediT or equivalent)", kw: [/\bauthor contributions?\b/i, /\bCRediT\b/i] },
+  { item: "Conflict of interest / funding statement", kw: [/\bconflicts? of interest\b/i, /\bfunding\b/i, /\bno funding was received\b/i] },
+];
 
 const GUIDELINE_CHECKLISTS = {
   PRISMA: {
-    trigger: /\b(systematic review|meta-analysis)\b/i,
+    name: "PRISMA 2020",
     items: [
       { item: "Structured abstract", kw: [/\babstract\b/i] },
       { item: "Rationale for the review", kw: [/\b(rationale|gap in (the )?(literature|evidence))\b/i] },
@@ -277,11 +324,55 @@ const GUIDELINE_CHECKLISTS = {
       { item: "Risk of bias assessment", kw: [/\brisk of bias\b/i, /\bquality assessment\b/i] },
       { item: "Synthesis methods", kw: [/\b(synthesis|pooled|meta-analysis|narrative synthesis)\b/i] },
       { item: "Study flow / numbers screened & included", kw: [/\b(flow diagram|records identified|studies included)\b/i] },
+      { item: "Protocol registration (+ any deviations stated)", kw: [/\b(PROSPERO|protocol (was )?registered|registration number)\b/i] },
+      { item: "Publication bias addressed", kw: [/\bpublication bias\b/i, /\bfunnel plot\b/i] },
+      { item: "Quality-appraisal tool disclosed", kw: [/\b(AMSTAR|Newcastle-Ottawa|\bNOS\b|GRADE|quality appraisal tool)\b/i] },
       { item: "Limitations discussed", kw: [/\blimitations?\b/i] },
     ],
   },
+  PRISMA_SCR: {
+    name: "PRISMA-ScR",
+    items: [
+      { item: "Title identifies the report as a scoping review", kw: [/\bscoping review\b/i] },
+      { item: "Structured abstract", kw: [/\babstract\b/i] },
+      { item: "Rationale for a scoping (not systematic) approach", kw: [/\brationale\b/i] },
+      { item: "Objectives framed as Population/Concept/Context (PCC)", kw: [/\b(population,?\s*concept,?\s*(and\s*)?context|PCC framework)\b/i] },
+      { item: "Protocol registration (or explicit statement none exists)", kw: [/\b(protocol (was )?registered|registration|no registered protocol)\b/i] },
+      { item: "Eligibility criteria for sources of evidence", kw: [/\beligibility criteria\b/i] },
+      { item: "Information sources / search strategy", kw: [/\b(databases?|search strategy|information sources)\b/i] },
+      { item: "Data charting process described", kw: [/\bdata charting\b/i, /\bcharting (form|process)\b/i] },
+      { item: "Critical appraisal approach stated (even if not performed)", kw: [/\bcritical appraisal\b/i] },
+      { item: "Results presented as a charted/tabulated map, not pooled statistics", kw: [/\b(charted|mapped|tabulated) (the )?(results|evidence)\b/i] },
+      { item: "Limitations discussed", kw: [/\blimitations?\b/i] },
+    ],
+  },
+  SANRA: {
+    name: "SANRA",
+    items: [
+      { item: "Topic's importance / justification for readers stated", kw: [/\b(importance|significance) of (this|the) (topic|review)\b/i, /\bjustif(y|ies|ication)\b/i] },
+      { item: "Specific aims or guiding questions stated", kw: [/\b(aim|purpose|objective) of this (review|article)\b/i] },
+      { item: "Literature search approach described", kw: [/\b(literature search|search (was )?conducted|search strategy)\b/i] },
+      { item: "Referencing adequate and traceable to claims", kw: [/\breferences?\b/i] },
+      { item: "Evidence quality distinguished (e.g., RCT vs. expert opinion)", kw: [/\b(randomi[sz]ed controlled trial|systematic review|expert opinion|level of evidence|quality of evidence)\b/i] },
+      { item: "Contrasting / conflicting evidence presented, not just supporting evidence", kw: [/\b(conflicting|contrasting|inconsistent) (evidence|findings|results)\b/i] },
+    ],
+  },
+  UMBRELLA: {
+    name: "Umbrella review checklist",
+    items: [
+      { item: "Explicitly labeled as an umbrella review", kw: [/\bumbrella review\b/i] },
+      { item: "Rationale for review-of-reviews synthesis", kw: [/\brationale\b/i] },
+      { item: "Protocol registration", kw: [/\b(PROSPERO|protocol (was )?registered)\b/i] },
+      { item: "Eligibility criteria for included systematic reviews", kw: [/\beligibility criteria\b/i] },
+      { item: "Search strategy / databases for finding reviews", kw: [/\b(databases?|search strategy)\b/i] },
+      { item: "Quality appraisal of included reviews (e.g., AMSTAR-2)", kw: [/\bAMSTAR\b/i] },
+      { item: "Overlap of primary studies across reviews assessed", kw: [/\b(corrected covered area|overlap of (primary )?studies|citation matrix)\b/i] },
+      { item: "Certainty of evidence summarized (e.g., GRADE)", kw: [/\bGRADE\b/i, /\bcertainty of evidence\b/i] },
+      { item: "Limitations address overlap / heterogeneity across reviews", kw: [/\bheterogeneity\b/i] },
+    ],
+  },
   STROBE: {
-    trigger: /\b(cohort study|case-control|cross-sectional)\b/i,
+    name: "STROBE",
     items: [
       { item: "Study design named in title/abstract", kw: [/\b(cohort|case-control|cross-sectional)\b/i] },
       { item: "Background / rationale", kw: [/\b(background|rationale)\b/i] },
@@ -298,7 +389,7 @@ const GUIDELINE_CHECKLISTS = {
     ],
   },
   CONSORT: {
-    trigger: /\b(randomi[sz]ed controlled trial|\bRCT\b)\b/i,
+    name: "CONSORT",
     items: [
       { item: "Trial design stated", kw: [/\btrial design\b/i, /\b(parallel|crossover) (group|design)\b/i] },
       { item: "Eligibility criteria for participants", kw: [/\b(eligibility|inclusion criteria|exclusion criteria)\b/i] },
@@ -314,17 +405,39 @@ const GUIDELINE_CHECKLISTS = {
       { item: "Trial registration", kw: [/\b(trial registration|clinicaltrials\.gov|registered)\b/i] },
     ],
   },
+  STARD: {
+    name: "STARD",
+    items: [
+      { item: "Identified as a diagnostic accuracy study", kw: [/\bdiagnostic accuracy\b/i] },
+      { item: "Index test described in replicable detail", kw: [/\bindex test\b/i] },
+      { item: "Reference standard described in replicable detail", kw: [/\breference standard\b/i] },
+      { item: "Test-positivity cut-offs stated", kw: [/\b(cut-?off|threshold)\b/i] },
+      { item: "Participant flow diagram", kw: [/\bflow diagram\b/i, /\bparticipant flow\b/i] },
+      { item: "Cross-tabulation of index test vs. reference standard (2x2)", kw: [/\b(2\s*[x×]\s*2|cross-?tabulation|contingency table)\b/i] },
+      { item: "Diagnostic accuracy estimates (sensitivity/specificity) with CIs", kw: [/\b(sensitivity|specificity)\b/i] },
+      { item: "Adverse events reported", kw: [/\badverse events?\b/i] },
+      { item: "Study registration", kw: [/\bregist(ered|ration)\b/i] },
+    ],
+  },
 };
 
-function runGuidelineChecklists(text) {
-  const applicable = Object.entries(GUIDELINE_CHECKLISTS).filter(([, g]) => g.trigger.test(text));
-  return applicable.map(([name, g]) => ({
-    name,
-    items: g.items.map((it) => ({
-      item: it.item,
-      found: it.kw.some((re) => re.test(text)),
-    })),
-  }));
+function runGuidelineChecklists(text, subtype) {
+  const groups = [
+    {
+      name: "Universal — every manuscript type",
+      items: UNIVERSAL_CHECKLIST_ITEMS.map((it) => ({ item: it.item, found: it.kw.some((re) => re.test(text)) })),
+    },
+  ];
+  if (subtype && subtype.checklistKey) {
+    const g = GUIDELINE_CHECKLISTS[subtype.checklistKey];
+    if (g) {
+      groups.push({
+        name: `${g.name} — ${subtype.label}`,
+        items: g.items.map((it) => ({ item: it.item, found: it.kw.some((re) => re.test(text)) })),
+      });
+    }
+  }
+  return groups;
 }
 
 const IRREGULAR_PARTICIPLES = "done|made|given|taken|written|seen|known|shown|found|held|kept|sent|brought|built|chosen|said|told|used|born";
@@ -414,7 +527,7 @@ function checkNumeralStart(sentences) {
 
 /* ---------- orchestration ---------- */
 
-function runReview(rawText) {
+function runReview(rawText, subtype) {
   const text = rawText.trim();
   const wordCount = countWords(text);
   const sentences = splitSentences(text);
@@ -442,9 +555,10 @@ function runReview(rawText) {
     ...checkNumeralStart(sentences),
   ];
 
-  const checklists = runGuidelineChecklists(text);
+  const checklists = runGuidelineChecklists(text, subtype);
 
   return {
+    subtype,
     stats: { wordCount, sentenceCount, avgSentenceLen, readability },
     tiers: { critical, major, minor },
     checklists,
@@ -515,9 +629,12 @@ function checklistToPlainText(checklists) {
 }
 
 function feedbackToPlainText(result) {
-  const { stats, tiers, checklists } = result;
+  const { subtype, stats, tiers, checklists } = result;
   const lines = [];
   lines.push("MANUSCRIPT REVIEW");
+  if (subtype) {
+    lines.push(`Type: ${subtype.groupLabel} — ${subtype.label}${subtype.guidelineName ? ` (${subtype.guidelineName})` : ""}`);
+  }
   lines.push(`${stats.wordCount} words · ${stats.sentenceCount} sentences · ~${stats.avgSentenceLen} words/sentence`);
   lines.push(`Readability: ${readabilityLabel(stats.readability)}`);
   lines.push("");
@@ -536,6 +653,46 @@ function feedbackToPlainText(result) {
   return lines.join("\n");
 }
 
+/* ---------- research type selector wiring ---------- */
+
+function populateSubtypeSelect(groupKey) {
+  const subtypeSelect = document.getElementById("researchSubtypeSelect");
+  const group = RESEARCH_TYPES[groupKey];
+  if (!group) {
+    subtypeSelect.innerHTML = `<option value="">— Select type first —</option>`;
+    subtypeSelect.disabled = true;
+    return;
+  }
+  subtypeSelect.innerHTML =
+    `<option value="">— Select —</option>` +
+    Object.entries(group.subtypes).map(([key, s]) => `<option value="${key}">${s.label}</option>`).join("");
+  subtypeSelect.disabled = false;
+}
+
+function getSelectedSubtype() {
+  const groupKey = document.getElementById("researchTypeSelect").value;
+  const subtypeKey = document.getElementById("researchSubtypeSelect").value;
+  if (!groupKey || !subtypeKey) return null;
+  return getSubtypeConfig(groupKey, subtypeKey);
+}
+
+function showTypeError(msg) {
+  const el = document.getElementById("typeSelectError");
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function clearTypeError() {
+  document.getElementById("typeSelectError").hidden = true;
+}
+
+function setSelectedSubtype(groupKey, subtypeKey) {
+  document.getElementById("researchTypeSelect").value = groupKey;
+  populateSubtypeSelect(groupKey);
+  document.getElementById("researchSubtypeSelect").value = subtypeKey;
+  clearTypeError();
+}
+
 /* ---------- UI wiring ---------- */
 
 let lastResultText = "";
@@ -544,7 +701,15 @@ function handleReview() {
   const input = document.getElementById("manuscriptInput").value;
   if (!input.trim()) return;
 
-  const result = runReview(input);
+  const subtype = getSelectedSubtype();
+  if (!subtype) {
+    showTypeError("Please select what kind of research this is first — it determines which reporting guideline gets checked.");
+    document.getElementById("researchTypeSelect").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  clearTypeError();
+
+  const result = runReview(input, subtype);
   lastResultText = feedbackToPlainText(result);
 
   document.getElementById("statsRow").innerHTML = statsHtml(result.stats);
@@ -553,9 +718,9 @@ function handleReview() {
     tierHtml("Major", "major", result.tiers.major) +
     tierHtml("Minor", "minor", result.tiers.minor);
   document.getElementById("checklistOutput").innerHTML = checklistHtml(result.checklists);
-  document.getElementById("checklistIntro").textContent = result.checklists.length
-    ? `Detected design: ${result.checklists.map((c) => c.name).join(", ")}. A "?" means the keyword wasn't found — verify manually, this is a heuristic, not proof of compliance.`
-    : "No specific study design (RCT, cohort, systematic review...) was detected in the text.";
+  document.getElementById("checklistIntro").textContent =
+    `Reviewed as: ${subtype.groupLabel} — ${subtype.label}${subtype.guidelineName ? ` (${subtype.guidelineName})` : ""}. ` +
+    `A "?" means the keyword wasn't found — verify manually, this is a heuristic, not proof of compliance.`;
 
   document.getElementById("resultsPanel").hidden = false;
   document.getElementById("resultsPanel").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -626,18 +791,134 @@ async function handleFileInput(file) {
 
 /* ---------- AI review (optional, requires user's own API key) ---------- */
 
-const AI_SYSTEM_PROMPT = `You are a senior research mentor conducting a rigorous manuscript review.
+const UNIVERSAL_PROMPT_ITEMS = `
+- Data Availability Statement present (or explicit statement of why it doesn't apply).
+- Ethics approval / informed consent statement present (or explicit non-applicability, e.g. "did not require ethical approval").
+- Author contribution statement (CRediT or equivalent) present.
+- Conflict of interest and funding statements present.
+- Title accurately scopes the actual content — flag if it promises more, or something different, than the manuscript delivers.
+- Abstract contains quantitative specificity (actual numbers/effect sizes), not just qualitative summary.`;
 
-Prioritize your review in this order: (1) research question and contribution, (2) study design validity, (3) population/eligibility criteria, (4) measurement quality, (5) statistical methods, (6) results consistency, (7) bias and confounding, (8) interpretation, (9) reporting-guideline compliance (PRISMA/STROBE/CONSORT/STARD/COREQ as applicable), (10) language and formatting — in that order of importance. Do not focus on grammar while major methodological issues remain unaddressed.
+const TYPE_SPECIFIC_PROMPT = {
+  systematic: {
+    items: `
+- Protocol registration stated, with any deviations from the registered protocol explicitly named (state "no deviations occurred" if true — PRISMA 2020 requires this said explicitly, not implied).
+- Literature search end-date checked against a plausible submission date; flag a gap of several months or more.
+- Publication bias addressed explicitly, even if only to say formal assessment wasn't feasible due to small study count.
+- If meta-analysis was not performed, the justification (heterogeneity, small samples, etc.) should appear in Methods or early Results, not buried in Discussion.
+- Quality-appraisal tool (NOS, AMSTAR-2, etc.) scoring scale and thresholds explained.
+- Screening/appraisal independence and duplication of reviewers stated.
+- PICO/PICOS/PECO framing present in the research question.
+- Small subgroup sample sizes (n<30) driving a headline claim called out as an explicit limitation.
+- Evidence gaps stated at full strength, not softened.`,
+  },
+  scoping: {
+    items: `
+- Title identifies the report as a scoping review.
+- Structured abstract covering background, objectives, eligibility criteria, sources of evidence, charting methods, results, conclusions.
+- Rationale explains why a scoping (not systematic) review was the right choice.
+- Objectives use PCC (Population, Concept, Context) framing rather than PICO.
+- Protocol registration stated, or an explicit statement that none exists.
+- Eligibility criteria for sources of evidence (types, time frame, language) stated.
+- Search strategy reproducible; information sources listed.
+- Data charting process and data items described.
+- Whether critical appraisal of individual sources was performed is stated explicitly (optional in scoping reviews, but the choice must be explicit, not silent).
+- Results presented as a charted/tabulated map of the evidence, not pooled/synthesized statistics (pooling would suggest a systematic review, not a scoping one).`,
+  },
+  narrative: {
+    items: `
+- The topic's importance/justification for the reader is explicitly stated, not assumed.
+- Specific aims or guiding questions of the review are clearly stated.
+- The literature search approach is described (source types, time frame, key terms), even though it isn't expected to be systematic.
+- Referencing is adequate and traceable to specific claims.
+- Evidence is weighted appropriately — higher-quality evidence (RCTs, systematic reviews) is distinguished from lower-quality evidence (case reports, expert opinion), not presented as uniformly authoritative.
+- Contrasting or conflicting evidence is presented, not just evidence that supports the review's thesis.`,
+  },
+  umbrella: {
+    items: `
+- Explicitly labeled as an umbrella review (review of systematic reviews) in title/abstract.
+- Rationale for synthesizing at the review-of-reviews level rather than running a fresh systematic review.
+- Protocol registration stated.
+- Eligibility criteria for which systematic reviews qualify for inclusion.
+- Search strategy and databases for finding systematic reviews.
+- Selection process for included reviews, independence/duplication of reviewers.
+- Quality appraisal of each included systematic review (e.g., AMSTAR-2) with scoring explained.
+- Overlap of primary studies across included reviews assessed (e.g., corrected covered area or a citation matrix) — this is the single most common gap specific to umbrella reviews.
+- How conflicting conclusions across included reviews were reconciled is described.
+- Certainty of evidence summarized (e.g., GRADE) where feasible.
+- Limitations explicitly address overlap and heterogeneity across included reviews, not just within one primary study.`,
+  },
+  rct: {
+    items: `
+- Trial design (parallel, crossover, factorial, etc.) stated.
+- Eligibility criteria for participants and settings.
+- Interventions described in enough detail to replicate.
+- Primary and secondary outcomes pre-specified and clearly defined.
+- Sample size / power calculation reported.
+- Randomization method (sequence generation, allocation concealment) described.
+- Blinding described — who was blinded, or explicitly stated as open-label.
+- Statistical methods, including whether analysis was intention-to-treat.
+- Participant flow (numbers randomized, analyzed, lost to follow-up), ideally as a flow diagram.
+- Baseline demographic/clinical data reported by arm.
+- Harms/adverse events reported, even if none occurred.
+- Trial registration number and registry stated.`,
+  },
+  observational: {
+    items: `
+- Study design (cohort, case-control, or cross-sectional) named clearly in the title or abstract.
+- Setting, locations, and relevant dates described.
+- Participant eligibility criteria and sources/methods of selection.
+- Variables (exposures, outcomes, confounders) clearly defined.
+- Data sources/measurement methods described, with a note on comparability of methods across groups if more than one.
+- Efforts to address bias described.
+- Study size and how it was determined.
+- Statistical methods, including how confounding was addressed.
+- Participant flow through the study (numbers at each stage).
+- Generalizability of findings discussed with reference to the actual study population.`,
+  },
+  diagnostic: {
+    items: `
+- Title/abstract identifies this as a diagnostic accuracy study.
+- Study design (e.g., cross-sectional, case-control) stated.
+- Index test and reference standard both described in enough detail to replicate.
+- Rationale for the choice of reference standard given.
+- Pre-specified test-positivity thresholds/cut-offs stated.
+- Participant flow diagram (enrolled → tested → analyzed) present or described.
+- Cross-tabulation of index test results against reference standard results (a 2x2 table or equivalent) present.
+- Diagnostic accuracy estimates (sensitivity, specificity, predictive values, etc.) reported with confidence intervals.
+- Adverse events from the index test or reference standard reported, even if none occurred.
+- Study registration stated.`,
+  },
+  other: { items: "" },
+};
+
+function buildAiSystemPrompt(subtype) {
+  const specific = TYPE_SPECIFIC_PROMPT[subtype.subtypeKey] || TYPE_SPECIFIC_PROMPT.other;
+  const guidelineLine = subtype.guidelineName
+    ? `The author has identified this manuscript as a **${subtype.label}**. Apply the **${subtype.guidelineName}** reporting guideline in addition to the universal checklist below.`
+    : `The author has identified this manuscript as **${subtype.label}**. No single reporting-guideline extension applies beyond the universal checklist below — evaluate rigor and structure against general original-research standards.`;
+
+  return `You are a senior research mentor conducting a rigorous manuscript review, in the voice of someone who has trained the author through many rounds of detailed revision: demanding about rigor, warm about effort. The goal is to move the draft toward the best version compatible with a top-tier (Q1) journal, not just a cleaner version of itself.
+
+${guidelineLine}
+
+Universal checklist — apply to every manuscript regardless of type:${UNIVERSAL_PROMPT_ITEMS}
+${specific.items ? `\n${subtype.label}-specific checklist (${subtype.guidelineName}):${specific.items}\n` : ""}
+Core rules:
+1. Nothing is approved just because it reads fine — check every quantitative claim, technical term, and cross-reference against what it should actually say. "Consistently associated" is not a finding; "4 of 7 studies, 3 significant" is a finding.
+2. Every criticism ships with a fix. One sentence naming the problem and why it matters, then a concrete, ready-to-insert replacement — this is the WHAT → WHY → NEXT pattern. If a fix needs a fact only the author has (an exact p-value, whether a protocol deviation occurred), ask directly rather than inventing a plausible-sounding number.
+3. Watch for causal language in observational designs specifically ("improved," "reduced," "caused") — the correct verb there is "associated with." Watch for unquantified claims of association/trend that need an actual count and direction. Watch for a reported SD larger than its mean, or numbers that don't sum or match across sections/tables.
+4. Comments are tiered by consequence, not chronology: Critical = will cause desk rejection, invalidates a claim, or is a compliance failure. Major = won't sink the paper but will draw serious reviewer pushback. Minor = typos, redundancy, polish.
 
 Structure your entire response using exactly these three headers, each on its own line:
 ## CRITICAL
 ## MAJOR
 ## MINOR
 
-Under each header, give a bulleted list ("- "). Each bullet must: state the issue, quote or reference the specific part of the text it concerns, and give a concrete, ready-to-insert fix — not just "revise this."
+Under each header, give a bulleted list ("- "). Each bullet must follow WHAT → WHY → NEXT: state the issue, quote or reference the specific part of the text it concerns, explain briefly why it matters, and give a concrete fix.
 
-Do not fabricate facts, citations, or data not present in the text. If you cannot assess reporting-guideline compliance from what's given, say so explicitly rather than guessing. Be direct, specific, and constructive.`;
+Do not fabricate facts, citations, or data not present in the text. If you cannot assess something (e.g., a checklist item genuinely can't be evaluated from what's given), say so explicitly rather than guessing. Be direct, specific, and constructive.`;
+}
 
 function escapeHtml(s) {
   const div = document.createElement("div");
@@ -689,6 +970,13 @@ async function handleAiReview() {
   const btn = document.getElementById("aiReviewBtn");
 
   if (!text) { status.textContent = "Paste or upload manuscript text first."; return; }
+  const subtype = getSelectedSubtype();
+  if (!subtype) {
+    showTypeError("Please select what kind of research this is first — it determines which reporting guideline gets checked.");
+    document.getElementById("researchTypeSelect").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  clearTypeError();
   if (!apiKey) { status.textContent = "Enter your Anthropic API key first."; return; }
 
   if (document.getElementById("rememberKey").checked) {
@@ -712,7 +1000,7 @@ async function handleAiReview() {
       body: JSON.stringify({
         model: "claude-sonnet-5",
         max_tokens: 4096,
-        system: AI_SYSTEM_PROMPT,
+        system: buildAiSystemPrompt(subtype),
         messages: [{ role: "user", content: text }],
       }),
     });
@@ -738,6 +1026,13 @@ async function handleAiReview() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("researchTypeSelect").addEventListener("change", (e) => {
+    populateSubtypeSelect(e.target.value);
+    clearTypeError();
+  });
+
+  document.getElementById("researchSubtypeSelect").addEventListener("change", clearTypeError);
+
   document.getElementById("reviewBtn").addEventListener("click", handleReview);
 
   document.getElementById("clearBtn").addEventListener("click", () => {
@@ -747,6 +1042,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("exampleBtn").addEventListener("click", () => {
     document.getElementById("manuscriptInput").value = EXAMPLE_MANUSCRIPT;
+    setSelectedSubtype("original", "rct");
     handleReview();
   });
 

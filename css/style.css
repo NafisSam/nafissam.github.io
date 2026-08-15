@@ -302,6 +302,16 @@ a { color: inherit; }
   top: 100px;
 }
 
+.about-avatar {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+
 .about-body p:first-of-type::first-letter {
   font-family: var(--font-display);
   font-size: 3.4em;

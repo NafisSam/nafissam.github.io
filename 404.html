@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+<title>Page not found — Nafiseh Sami</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="index.html" class="brand">Nafiseh Sami</a>
+  </nav>
+</header>
+
+<main class="container hero">
+  <p class="eyebrow reveal">404</p>
+  <h1 class="reveal">This page doesn't exist.</h1>
+  <p class="hero-sub reveal">
+    The link may be broken, or the page may have moved. Head back to the homepage to find what
+    you're looking for.
+  </p>
+  <div class="hero-actions reveal">
+    <a href="index.html" class="btn btn-primary">Back to homepage</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> Nafiseh Sami</span>
+    <span class="footer-note">Built with plain HTML, CSS &amp; JS</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

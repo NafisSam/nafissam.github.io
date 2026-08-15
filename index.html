@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+<title>Nafiseh Sami — Physician, Building Clinical AI</title>
+<meta name="description" content="Nafiseh Sami — final-year MD student building toward clinical AI engineering, precision medicine, and digital health.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nafiseh Sami — Physician, Building Clinical AI">
+<meta property="og:description" content="Final-year MD student building toward clinical AI engineering, precision medicine, and digital health.">
+<meta property="og:image" content="https://nafissam.github.io/assets/og-image.png">
+<meta property="og:url" content="https://nafissam.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nafiseh Sami — Physician, Building Clinical AI">
+<meta name="twitter:description" content="Final-year MD student building toward clinical AI engineering, precision medicine, and digital health.">
+<meta name="twitter:image" content="https://nafissam.github.io/assets/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="#top" class="brand">Nafiseh Sami</a>
+    <div class="nav-right">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#focus">Focus</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#research-tools">Research Tools</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- TODO(profile photo): no headshot asset has been supplied yet. Add one here
+       (e.g. an <img> in this hero section, or as a small element next to the
+       brand/about copy) once a real photo is provided — do not fabricate one. -->
+  <section class="hero container">
+    <p class="eyebrow reveal">Physician &middot; Builder &middot; Final-Year MD</p>
+    <h1 class="reveal">Medicine gave me the questions.<br><em>Engineering</em> is how I answer them.</h1>
+    <p class="hero-sub reveal">
+      I'm Nafis — a final-year MD student in Tehran building toward a career as an applied
+      clinical AI engineer. I work at the intersection of medicine, AI, and product: turning
+      clinical problems into tools people actually use.
+    </p>
+    <div class="hero-actions reveal">
+      <a href="#projects" class="btn btn-primary">See what I'm building</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </section>
+
+  <section id="about" class="section container">
+    <div class="about-grid">
+      <div class="about-label reveal">
+        <span class="section-tag">About</span>
+        <h2>A physician-engineer, on purpose</h2>
+      </div>
+      <div class="about-body reveal">
+        <p>
+          I'm not leaving medicine to become an engineer — I'm building the bridge between them.
+          My path combines clinical training with AI, engineering, and healthcare product
+          development, because the problems I care most about (diagnosis, access, decision-making
+          at the bedside) don't get solved by choosing just one side of that line.
+        </p>
+        <p>
+          The long-term goal is bigger than any single project: to build an organization that
+          helps healthcare systems adopt AI responsibly — real pipelines, real evaluation, real
+          clinical accountability — and leave the systems I work in a little better than I found
+          them.
+        </p>
+        <p>
+          Day to day, that means moving between clinical rotations, research, teaching and
+          mentoring junior researchers, and building software — usually in intense, focused
+          cycles rather than evenly spread days.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="focus" class="section container">
+    <div class="section-head reveal">
+      <span class="section-tag">Focus</span>
+      <h2>Where I spend my energy</h2>
+    </div>
+    <div class="focus-list">
+      <div class="focus-item reveal">
+        <span class="focus-index">01</span>
+        <div>
+          <h3>Clinical Medicine</h3>
+          <p>Final-year MD training, grounded in direct patient contact — the source of every
+          problem worth solving.</p>
+        </div>
+      </div>
+      <div class="focus-item reveal">
+        <span class="focus-index">02</span>
+        <div>
+          <h3>Clinical AI &amp; Engineering</h3>
+          <p>Building applied AI systems for medical documentation, decision support, and
+          precision medicine — with deterministic validation, not just model output.</p>
+        </div>
+      </div>
+      <div class="focus-item reveal">
+        <span class="focus-index">03</span>
+        <div>
+          <h3>Research</h3>
+          <p>Systematic and scoping reviews, clinical research, and evidence-based writing —
+          practiced in reporting-guideline-compliant methodology.</p>
+        </div>
+      </div>
+      <div class="focus-item reveal">
+        <span class="focus-index">04</span>
+        <div>
+          <h3>Teaching &amp; Leadership</h3>
+          <p>Leading a university research &amp; technology committee, mentoring junior
+          researchers, and building repeatable systems for teaching research from scratch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section container">
+    <div class="section-head reveal">
+      <span class="section-tag">Projects</span>
+      <h2>Things I'm building</h2>
+      <p class="section-sub">
+        A growing collection of AI systems, tools, extensions, and mini-apps — mostly at the
+        intersection of medicine and software. This list grows as things ship.
+      </p>
+    </div>
+    <div class="entry-list" id="projectGrid"><!-- populated by js/projects-data.js --></div>
+  </section>
+
+  <section id="research-tools" class="section container">
+    <div class="section-head reveal">
+      <span class="section-tag">Research Tools</span>
+      <h2>Do your research easier, more professional</h2>
+      <p class="section-sub">
+        One step toward becoming a professional researcher — practical tools built from real
+        manuscript review and mentoring experience.
+      </p>
+    </div>
+    <div class="tool-frame">
+      <div class="entry-list" id="toolGrid"><!-- populated by js/research-tools-data.js --></div>
+    </div>
+  </section>
+
+  <section id="contact" class="section container">
+    <div class="contact-block reveal">
+      <span class="section-tag">Contact</span>
+      <h2>Let's talk</h2>
+      <p>
+        Open to conversations about clinical AI, digital health products, research
+        collaboration, or teaching. Reach out — I read everything.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:diabetesassistant.hn@gmail.com" class="btn btn-primary">Email me</a>
+        <a href="https://github.com/NafisSam" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
+        <!-- TODO(CV link): no CV file/link has been supplied yet. Add a
+             "Download CV" button here (pointing at a real PDF or hosted CV)
+             once provided — do not fabricate a link. -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> Nafiseh Sami</span>
+    <span class="footer-note">Built with plain HTML, CSS &amp; JS</span>
+  </div>
+</footer>
+
+<script src="js/projects-data.js"></script>
+<script src="js/research-tools-data.js"></script>
+<script src="js/main.js"></script>
+<!-- TODO(analytics): no analytics account/ID has been supplied yet. Add the
+     real analytics snippet here (e.g. Plausible, GA4) once an account is
+     provided — do not fabricate a tracking ID. -->
+</body>
+</html>

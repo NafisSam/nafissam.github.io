@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nafissam.github.io/sitemap.xml

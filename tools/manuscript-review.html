@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+<title>Manuscript Review Tool — Nafiseh Sami</title>
+<meta name="description" content="Instant, mentor-style manuscript feedback. Rule-based checks run entirely in your browser; an optional deep AI review is available with your own API key.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Manuscript Review Tool — Nafiseh Sami">
+<meta property="og:description" content="Instant, mentor-style manuscript feedback. Rule-based checks run entirely in your browser; an optional deep AI review is available with your own API key.">
+<meta property="og:image" content="https://nafissam.github.io/assets/og-image.png">
+<meta property="og:url" content="https://nafissam.github.io/tools/manuscript-review.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Manuscript Review Tool — Nafiseh Sami">
+<meta name="twitter:description" content="Instant, mentor-style manuscript feedback. Rule-based checks run entirely in your browser; an optional deep AI review is available with your own API key.">
+<meta name="twitter:image" content="https://nafissam.github.io/assets/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="../index.html#research-tools" class="brand">← Nafiseh Sami</a>
+    <div class="nav-right">
+      <span class="tool-nav-label">Manuscript Review Tool</span>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main class="container tool-shell">
+
+  <section class="tool-intro reveal">
+    <span class="section-tag">Research Tools</span>
+    <h1>Manuscript Review Tool</h1>
+    <p class="hero-sub">
+      Paste your manuscript, or upload a .txt/.md/.docx/.pdf file. The free review below runs
+      deterministic, rule-based checks — structure, reporting-guideline checklists, cross-section
+      consistency, citation matching — <strong>entirely in your browser, no AI, nothing uploaded
+      to a server.</strong> An optional deep AI review is available further down if you want
+      genuine research-level judgment, using your own API key.
+    </p>
+  </section>
+
+  <section class="panel tool-input-panel reveal">
+    <label for="manuscriptInput" class="tool-label">Your text</label>
+    <textarea id="manuscriptInput" rows="14" placeholder="Paste your abstract, section, or full manuscript here..."></textarea>
+
+    <div class="tool-controls">
+      <label class="btn btn-ghost file-btn">
+        Upload file
+        <input type="file" id="fileInput" accept=".txt,.md,.docx,.pdf" hidden>
+      </label>
+      <button id="reviewBtn" class="btn btn-primary" type="button">Review my paper</button>
+      <button id="exampleBtn" class="btn btn-ghost" type="button">Load example</button>
+      <button id="clearBtn" class="btn btn-ghost" type="button">Clear</button>
+    </div>
+    <p class="tool-note" id="fileStatus">
+      .txt / .md read instantly. .docx / .pdf load a small parsing library from a CDN on first
+      use — your document's content itself is never uploaded anywhere; parsing happens locally.
+    </p>
+  </section>
+
+  <section id="resultsPanel" class="tool-results" hidden>
+    <div class="panel reveal">
+      <div class="results-head">
+        <h2>Rule-Based Feedback</h2>
+        <button id="copyBtn" class="btn btn-ghost" type="button">Copy as text</button>
+      </div>
+      <div id="statsRow" class="stats-row"></div>
+      <div id="feedbackOutput" class="feedback-output"></div>
+    </div>
+
+    <div class="panel reveal checklist-panel">
+      <h2>Reporting-Guideline Checklist</h2>
+      <p class="section-sub" id="checklistIntro">Detected from your text's study-design cues.</p>
+      <div id="checklistOutput"></div>
+    </div>
+  </section>
+
+  <section id="aiPanel" class="section-head reveal ai-review-section">
+    <span class="section-tag">Optional</span>
+    <h2>Deep AI Review</h2>
+    <p class="section-sub">
+      The checks above are pattern-matching — useful, but they can't judge whether your
+      methodology is actually sound or your argument holds up. This step sends your text
+      directly from your browser to Anthropic's API using <strong>your own API key</strong> —
+      never through any server of mine — for a genuine, mentor-style research review. Billed to
+      your own account; nothing is stored by this site.
+    </p>
+
+    <div class="panel ai-input-panel">
+      <label for="apiKeyInput" class="tool-label">Anthropic API key</label>
+      <div class="tool-controls" style="margin-top:0;">
+        <input type="password" id="apiKeyInput" placeholder="sk-ant-..." class="api-key-input">
+        <label class="remember-label">
+          <input type="checkbox" id="rememberKey"> Remember on this device
+        </label>
+      </div>
+      <div class="tool-controls">
+        <button id="aiReviewBtn" class="btn btn-primary" type="button">Run deep AI review</button>
+        <button id="forgetKeyBtn" class="btn btn-ghost" type="button">Forget saved key</button>
+        <span class="tool-note" id="aiStatus"></span>
+      </div>
+    </div>
+
+    <div id="aiResultsPanel" class="panel ai-results-panel" hidden>
+      <div class="results-head">
+        <h3 style="margin:0;">AI Review</h3>
+        <button id="copyAiBtn" class="btn btn-ghost" type="button">Copy as text</button>
+      </div>
+      <div id="aiOutput" class="feedback-output"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> Nafiseh Sami</span>
+    <span class="footer-note">Rule-based analysis — not a substitute for human peer review</span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="manuscript-review.js"></script>
+</body>
+</html>

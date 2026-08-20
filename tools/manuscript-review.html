@@ -25,16 +25,24 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to content</a>
+
 <header class="site-header">
   <nav class="nav container">
-    <a href="../index.html#research-tools" class="brand">← Nafiseh Sami</a>
+    <a href="../index.html#research-tools" class="brand">
+      <span class="brand-mark" aria-hidden="true">N/S</span>
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-name">← Nafiseh Sami</span>
+        <span class="brand-sub">Manuscript Review Tool</span>
+      </span>
+    </a>
     <div class="nav-right">
-      <span class="tool-nav-label">Manuscript Review Tool</span>
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
         <span class="theme-icon">🌙</span>
       </button>
@@ -42,7 +50,7 @@
   </nav>
 </header>
 
-<main class="container tool-shell">
+<main id="main" class="container tool-shell">
 
   <section class="tool-intro reveal">
     <span class="section-tag">Research Tools</span>

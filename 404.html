@@ -14,26 +14,36 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header class="site-header">
   <nav class="nav container">
-    <a href="index.html" class="brand">Nafiseh Sami</a>
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">N/S</span>
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-name">Nafiseh Sami</span>
+      </span>
+    </a>
   </nav>
 </header>
 
-<main class="container hero">
-  <p class="eyebrow reveal">404</p>
-  <h1 class="reveal">This page doesn't exist.</h1>
-  <p class="hero-sub reveal">
-    The link may be broken, or the page may have moved. Head back to the homepage to find what
-    you're looking for.
-  </p>
-  <div class="hero-actions reveal">
-    <a href="index.html" class="btn btn-primary">Back to homepage</a>
+<main id="main" class="container hero">
+  <div class="hero-inner" style="grid-template-columns:1fr;">
+    <div class="hero-copy">
+      <p class="eyebrow reveal">404</p>
+      <h1 class="reveal">This page doesn't exist.</h1>
+      <p class="hero-sub reveal">
+        The link may be broken, or the page may have moved. Head back to the homepage to find what
+        you're looking for.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="index.html" class="btn btn-primary">Back to homepage</a>
+      </div>
+    </div>
   </div>
 </main>
 

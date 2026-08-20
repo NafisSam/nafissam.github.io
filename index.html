@@ -11,6 +11,7 @@
 </script>
 <title>Nafiseh Sami — Physician, Building Clinical AI</title>
 <meta name="description" content="Nafiseh Sami — final-year MD student building toward clinical AI engineering, precision medicine, and digital health.">
+<link rel="canonical" href="https://nafissam.github.io/">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
 <meta property="og:type" content="website">
@@ -25,46 +26,178 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="preload" as="image" href="assets/stethoscope.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Nafiseh Sami",
+      "alternateName": "Nafis",
+      "url": "https://nafissam.github.io/",
+      "image": "https://nafissam.github.io/assets/og-image.png",
+      "jobTitle": "Physician-in-training",
+      "description": "Final-year MD student building toward clinical AI engineering, precision medicine, and digital health.",
+      "sameAs": ["https://github.com/NafisSam"]
+    },
+    {
+      "@type": "WebSite",
+      "name": "Nafiseh Sami",
+      "url": "https://nafissam.github.io/"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to content</a>
+
 <header class="site-header">
-  <nav class="nav container">
-    <a href="#top" class="brand">Nafiseh Sami</a>
+  <div class="nav container">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true">N/S</span>
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-name">Nafiseh Sami <span class="brand-nick">(Nafis)</span></span>
+        <span class="brand-sub">Physician × Applied Healthcare AI Engineer</span>
+      </span>
+    </a>
     <div class="nav-right">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#research-tools">Tools</a></li>
+        <li><a href="#contact" class="btn btn-primary nav-cta">Let's talk</a></li>
+      </ul>
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
-        <span class="theme-icon">🌙</span>
+        <span class="theme-icon" aria-hidden="true">🌙</span>
       </button>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#about">About</a></li>
-        <li><a href="#focus">Focus</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#research-tools">Research Tools</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
     </div>
-  </nav>
+  </div>
 </header>
 
-<main id="top">
+<main id="main">
 
-  <section class="hero container">
-    <p class="eyebrow reveal">Physician &middot; Builder &middot; Final-Year MD</p>
-    <h1 class="reveal">Medicine gave me the questions.<br><em>Engineering</em> is how I answer them.</h1>
-    <p class="hero-sub reveal">
-      I'm Nafis — a final-year MD student in Tehran building toward a career as an applied
-      clinical AI engineer. I work at the intersection of medicine, AI, and product: turning
-      clinical problems into tools people actually use.
-    </p>
-    <div class="hero-actions reveal">
-      <a href="#projects" class="btn btn-primary">See what I'm building</a>
-      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+  <section class="hero container" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">Medicine, data, and systems.</p>
+        <h1 class="reveal">I build clinical AI that works in <em>the real world</em>.</h1>
+        <span class="hero-rule reveal" aria-hidden="true"></span>
+        <p class="hero-sub reveal">
+          Nafiseh Sami — physician-in-training, researcher, and applied healthcare AI builder.
+        </p>
+        <div class="hero-actions reveal">
+          <a href="#work" class="btn btn-primary">View selected work <span class="btn-arrow" aria-hidden="true">→</span></a>
+          <a href="assets/N.Sami_CV.pdf" download class="btn btn-ghost"><span class="btn-icon" aria-hidden="true">⭳</span> Download CV</a>
+        </div>
+      </div>
+
+      <div class="hero-collage reveal" aria-hidden="true">
+        <div class="collage-frame">
+          <span class="collage-shape shape-sage"></span>
+          <span class="collage-shape shape-terracotta-1"></span>
+          <span class="collage-shape shape-terracotta-2"></span>
+
+          <span class="collage-grid">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </span>
+
+          <svg class="collage-chart" viewBox="0 0 300 160" preserveAspectRatio="none" focusable="false">
+            <polyline points="4,140 42,120 80,132 118,86 156,96 194,54 232,64 268,20 296,10"
+              fill="none" stroke="var(--dusty-blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="var(--dusty-blue)">
+              <circle cx="4" cy="140" r="4.5"/><circle cx="42" cy="120" r="4.5"/><circle cx="80" cy="132" r="4.5"/>
+              <circle cx="118" cy="86" r="4.5"/><circle cx="156" cy="96" r="4.5"/><circle cx="194" cy="54" r="4.5"/>
+              <circle cx="232" cy="64" r="4.5"/><circle cx="268" cy="20" r="4.5"/><circle cx="296" cy="10" r="4.5"/>
+            </g>
+          </svg>
+
+          <div class="collage-note">
+            <p>CC: Shortness of breath.</p>
+            <p>HPI: 3 days of dyspnea</p>
+            <p>PMH: HTN, DM2</p>
+            <p>Meds: metformin, losartan</p>
+            <p>Plan: labs, echo, f/u</p>
+          </div>
+
+          <div class="collage-checklist">
+            <p class="checked"><span class="mark">☑</span>History</p>
+            <p class="checked"><span class="mark">☑</span>Exam</p>
+            <p><span class="mark">☐</span>Labs</p>
+            <p><span class="mark">☐</span>Imaging</p>
+            <p class="checked"><span class="mark">☑</span>Assessment</p>
+            <p><span class="mark">☐</span>Plan</p>
+          </div>
+
+          <img class="collage-stethoscope" src="assets/stethoscope.svg" alt="" width="520" height="640">
+
+          <p class="collage-word word-care">Care</p>
+          <p class="collage-word word-evidence">Evidence</p>
+          <p class="collage-word word-impact">Impact</p>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <section class="practice-strip container" aria-label="What I do">
+    <ul class="practice-list">
+      <li class="practice-item">
+        <span class="practice-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v6a4 4 0 0 0 8 0V3"/><path d="M9 15a5 5 0 0 0 10 0v-2"/><circle cx="19" cy="9" r="2"/></svg>
+        </span>
+        <div>
+          <span class="practice-label">Research</span>
+          <p>Asking meaningful questions. Generating real-world evidence.</p>
+        </div>
+      </li>
+      <li class="practice-item">
+        <span class="practice-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 21 8v8l-9 5-9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+        </span>
+        <div>
+          <span class="practice-label">Products</span>
+          <p>Building tools clinicians can trust and use.</p>
+        </div>
+      </li>
+      <li class="practice-item">
+        <span class="practice-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v18H6.5A2.5 2.5 0 0 0 4 23.5Z"/><path d="M12 3h5.5A2.5 2.5 0 0 1 20 5.5v16A2.5 2.5 0 0 0 17.5 21H12"/></svg>
+        </span>
+        <div>
+          <span class="practice-label">Teaching</span>
+          <p>Explaining clearly. Empowering others.</p>
+        </div>
+      </li>
+      <li class="practice-item">
+        <span class="practice-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.6-10-9.2C.5 8.4 2 4.8 5.5 4a5 5 0 0 1 6.5 2.4A5 5 0 0 1 18.5 4c3.5.8 5 4.4 3.5 7.8C19.5 16.4 12 21 12 21Z"/></svg>
+        </span>
+        <div>
+          <span class="practice-label">Clinical Practice</span>
+          <p>Grounded in patient care. Committed to outcomes.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="work" class="section container">
+    <div class="section-head reveal">
+      <h2>Selected work</h2>
+      <p class="section-sub">A few projects at the intersection of medicine and applied AI.</p>
+    </div>
+    <div class="work-grid" id="projectGrid"><!-- populated by js/projects-data.js --></div>
   </section>
 
   <section id="about" class="section container">
@@ -137,16 +270,30 @@
     </div>
   </section>
 
-  <section id="projects" class="section container">
+  <section id="research" class="section container">
     <div class="section-head reveal">
-      <span class="section-tag">Projects</span>
-      <h2>Things I'm building</h2>
+      <span class="section-tag">Research</span>
+      <h2>Method, not just output</h2>
       <p class="section-sub">
-        A growing collection of AI systems, tools, extensions, and mini-apps — mostly at the
-        intersection of medicine and software. This list grows as things ship.
+        Systematic and scoping reviews, clinical research, and evidence-based writing —
+        practiced in reporting-guideline-compliant methodology, alongside ongoing work in
+        research mentoring and study design.
       </p>
     </div>
-    <div class="entry-list" id="projectGrid"><!-- populated by js/projects-data.js --></div>
+    <div class="research-body reveal">
+      <p class="research-placeholder">
+        A list of verified publications will be added here as they're confirmed.
+      </p>
+    </div>
+  </section>
+
+  <section id="publications" class="section container">
+    <div class="section-head reveal">
+      <span class="section-tag">Publications</span>
+      <h2>Peer-reviewed work</h2>
+      <p class="section-sub">13 peer-reviewed publications · H-index 6</p>
+    </div>
+    <div class="entry-list" id="publicationsGrid"><!-- populated by js/publications-data.js --></div>
   </section>
 
   <section id="research-tools" class="section container">
@@ -163,6 +310,21 @@
     </div>
   </section>
 
+  <section id="contributions" class="section container">
+    <div class="section-head reveal">
+      <span class="section-tag">Contributions</span>
+      <h2>Beyond the papers</h2>
+      <p class="section-sub">A few highlights beyond the publication list — the CV download has the rest.</p>
+    </div>
+    <ul class="contrib-list">
+      <li class="reveal">13 peer-reviewed publications, H-index 6</li>
+      <li class="reveal">Invited Peer Reviewer — BMC Medical Education and BMC Psychiatry (2026)</li>
+      <li class="reveal">Research mentor and coordinator — Research &amp; Technology Department, Medical Student Research Committee, guiding junior researchers into early research participation</li>
+      <li class="reveal">Research Mentor, Research Institute for Functional Neurosurgery (RIFN), SBMU (Mar 2025–Present)</li>
+      <li class="reveal">Clinical trial collaborator on two phases of an intraoperative electrical lymph node scanning (ELS) study for breast cancer (Shohadaye-Tajrish Hospital; Motamed Cancer Institute, ACECR)</li>
+    </ul>
+  </section>
+
   <section id="contact" class="section container">
     <div class="contact-block reveal">
       <span class="section-tag">Contact</span>
@@ -174,6 +336,7 @@
       <div class="contact-links">
         <a href="mailto:diabetesassistant.hn@gmail.com" class="btn btn-primary">Email me</a>
         <a href="https://github.com/NafisSam" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/nafiseh-sami-9807991b3/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
         <a href="assets/N.Sami_CV.pdf" download class="btn btn-ghost">CV ↓</a>
         <a href="https://forms.gle/yq65sF2Z8pFFS46X9" target="_blank" rel="noopener" class="btn btn-ghost">Let's collaborate ↗</a>
       </div>
@@ -191,6 +354,7 @@
 
 <script src="js/projects-data.js"></script>
 <script src="js/research-tools-data.js"></script>
+<script src="js/publications-data.js"></script>
 <script src="js/main.js"></script>
 <!-- TODO(analytics): no analytics account/ID has been supplied yet. Add the
      real analytics snippet here (e.g. Plausible, GA4) once an account is

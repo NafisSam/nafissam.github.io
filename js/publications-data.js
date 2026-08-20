@@ -102,7 +102,6 @@ function renderPublications() {
       <div class="entry-body">
         <h3>${pub.title}</h3>
         <p>${pub.journal}</p>
-        <div class="entry-tags">Nafiseh Sami, et al.</div>
       </div>
       <a class="entry-link" href="${pub.link}" target="_blank" rel="noopener">View ↗</a>
     </div>
